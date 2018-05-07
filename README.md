@@ -267,11 +267,11 @@ zip model.zip main.py models/*
 bx ml train model.zip pytorch-cifar.yml
 ```
 
-< img src="img/startrun.jpg" width=90%>
+<img src="img/startrun.jpg" width=90%>
 
 That's it! The command should generate a training ID for you, meaning our model has started training on Watson!
 
-### Step 4: Monitor the training (Optional)
+### Step 4: Monitor the training
 
 #### We can check the status of training using the `bx ml list` command:
 ```
@@ -279,17 +279,18 @@ bx ml list training-runs
 ```
 <img src="img/listruns.jpg" width=100%>
 
-#### We can also continuously monitor a training run by using the `bx ml monitor` command:
+#### Continuously monitor a training run by using the `bx ml monitor` command:
 ```
 bx ml monitor training-runs < trainingID >
 ```
 <img src="img/monitorruns.jpg" width=100%>
 
-As training proceeds, you should also see results from the training process being copied to the results bucket specified in your training job `yaml` file - `training_results_references.target bucket`.
+As training proceeds, you should see results from the training process being copied to the results bucket specified in your training job `yaml` file - `training_results_references.target bucket`.
 
 <img src="img/cloudstorage.jpg" width=100%>
 
-You can also inspect the status of training by downloading and viewing the training log file which has been copied to the result bucket. This is useful in debugging errors and failed jobs.
+You can also inspect the status of training by downloading and viewing the training log file which has been copied to the result bucket. 
+This is useful in debugging errors and failed jobs.
 
 #### To do this, we run:
 ```
