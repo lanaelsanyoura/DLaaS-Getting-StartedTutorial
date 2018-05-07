@@ -1,127 +1,143 @@
-# Train CIFAR10 with PyTorch using IBM Watson Studio
-The code here is forked from [kuangliu](https://github.com/kuangliu/pytorch-cifar) and adapted for submitting the model to IBM Watson Machine Learning on Watson Studio for training. It is meant to get you quick-started. We hope you have some fun running your first models on IBM Cloud.
+# MITIBMCloud
 
-## Quickstart Local
+## How can I run code on IBM Cloud [Watson Studio](https://www.ibm.com/cloud/watson-studio)?
 
-If executing locally, this python script only needs *pytorch* and *torchvision* . Install as described on the [pytorch webpage](http://pytorch.org). Then clone the repo and run the following to train a VGG19 locally:
+Here are the setup steps to to use the Machine Learing (ML) service.
+**NB: These steps use a Command Line Interface (CLI). There is an alternative browser used interface** 
 
-```
-python3 download_cifar.py
-python3 main.py --lr 0.01 --epochs 100 --model vgg19
-```
+What we will do as a one time Setup:
 
-### General Syntax
-```
-usage: main.py [-h] [-l] [--lr LR] [--resume] [--cifar_path CIFAR_PATH]
-               [--checkpoint_path CP] [--epochs EPOCHS]
-               [--model MODEL]
+0. Confirm that you have an IBM Cloud userid
+1. Download [CLI tools](https://console.bluemix.net/docs/cli/index.html#overview) to access and manage resources in the IBM Cloud
+2. Login thru the CLI to your IBM Cloud account
+3. Configure your IBM Cloud account. 
+4. Create a Watson ML Instance
+5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
+ 
+### Step 0: Confirm that you have a valid account on IBM Cloud. 
 
-PyTorch CIFAR10 Training
+Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
+(If you are part of the IBM-MIT AI lab, but do NOT have a valid account, please contact noor.fairoza@ibm.com)
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -l                    lists all available models (default: False)
-  --lr LR               learning rate (default: 0.1)
-  --resume, -r          resume from checkpoint (default: False)
-  --cifar_path          path to cifar tar.gz (default: ./cifar10)
-  --checkpoint_path CP  checkpoint path (default: .)
-  --epochs EPOCHS       no of epochs (default: 10)
-  --model MODEL         Model type: vgg16,... (default: vgg16)
-```
+### Step 1: Install CLI tools in your local machine (laptop) to remotely access your Cloud resources
 
+#### 1.1. Download and Install the IBM Cloud CLI: `bx`
+'bx' allows you to start and manage resources (e.g., applications, containers, services, ...) in the IBM cloud. 
 
-## How can I run code on IBM Watson Studio (for free) ?
+Download [bx CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
+and install it, following the instructions for your local machine operating system (OSX, Linux or Windows)
 
-Below are the steps to setup your account to run your ML training runs in the cloud on different numbers and types of GPUs. After setup (steps 1-6), you will be able to train your machine learning models on Watson studio in less than a minute! If you already have your environment setup, start at step 7.
+#### 1.2. Install `awscli` using [pip](https://pypi.org/project/pip/)
 
-If you are interested in Watson Studio in general we recommend to read more about it here: [https://www.ibm.com/cloud/watson-studio](https://www.ibm.com/cloud/watson-studio)
-
-### Step 0: Fork/clone me!
-
-### Step 1: Download CIFAR10 to your machine
-
-```
-python3 download_cifar.py
-```
-
-### Step 1b: Test the code on your own machine (optional)
-
-```
-python3 main.py --lr 0.01 --epochs 100 --model vgg19
-```
-Now to run the code on Watson, all you need is an IBM Cloud account and a cloud storage bucket to hold the input data (CIFAR10) and output data (models, performance stats).
-
-### Step 2: Create an account on IBM Cloud
-
-Visit [https://console.bluemix.net/](https://console.bluemix.net/) to sign up!
-
-### Step 3: Setup local machine
-
-#### 3.1. Install `bx`
-
-First, the `bx` [CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install) allows you to start and manage IBM cloud instances from the command-line.
-
-OSX:
-
-```
-curl -fsSL https://clis.ng.bluemix.net/install/osx | sh
-```
-
-Linux:
-
-```
-curl -fsSL https://clis.ng.bluemix.net/install/linux | sh
-```
-
-Windows:
-
-```
-powershell.exe -command "iex (New-Object Net.WebClient).DownloadString('https://clis.ng.bluemix.net/install/powershell')"
-```
-
-
-#### 3.2. Login with your IBM Cloud account:
-
-```
-bx login
-or:
-bx login -sso (if within IBM)
-```
-
-#### 3.3. Install `awscli`
-
-The [awscli](https://docs.aws.amazon.com/cli/latest/userguide/) lets you setup and upload data to your buckets.
+The [aws CLI](https://docs.aws.amazon.com/cli/latest/userguide/) lets you setup and upload data to your buckets. (Will get to this later)
 
 ```
 pip install awscli
 ```
 
-#### 3.4. Install `bx` machine-learning plugin
+#### 1.3. Install `bx` machine-learning plugin
 
-Lastly, the machine learning plugin for `bx` lets you use the watson ml part of the bluemix cli to start, view, and stop ml jobs on watson.
+The `machine-learning` plugin for `bx` lets you start, view, and stop your Machine Learning jobs on Watson.
 
 ```
 bx plugin install machine-learning
 ```
 
-### Step 4: Create a bucket
-
-A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is like a huge folder in the cloud which you can put and get any file or folder (specifically your datasets) using an api-style interface.
-
-#### 4.1. Create a cloud instance:
-
-First, we create your own personal cloud storage instance to hold your bucket and name the instance `my_instance`.
-
+#### Step 2. Login to IBM Cloud account:
+Now we will create data and service resources in the IBM Cloud. First we login.
 ```
-bx resource service-instance-create my_instance cloud-object-storage lite global
-bx resource service-instance my_instance
+bx login
 ```
 
-#### 4.2. Get credentials:
+### 3. Configure your account to access IBM Cloud 
 
-We then create and get your personal instance credentials naming it `my_cli_key` so that you can create and access your bucket.
+In order to run jobs on Watson, you need an `organization` (also called `org`) and a `space` to hold your jobs. 
+`Org` names are also globally unique. 
 
-Create key and print it:
+#### 3.1 Use an existing org
+The account owner should have already created an `org` for you (and others) to share assets.
+You can find out the organizations available for you with the command:<br>
+
+```
+bx account orgs
+```
+
+The command will return something like:
+
+```
+Name                Region     Account owner      Account ID                         Status   
+MITIBMWatsonAiLab   us-south   ailab@us.ibm.com   5eb998dd20e3d7fc0153329e32362d64   active   
+```
+Select the correct `Name` and save it in a variable, i.e.,
+```
+org_name="MITIBMWatsonAiLab"
+bx target -o $org_name
+```
+
+#### 3.2 Use your own space
+Now lets find out the name of the `space` for you under the `org`. 
+```
+bx account spaces
+```
+This will return something like:
+```
+Getting spaces under organization MITIBMWatsonAiLab in region us-south as myuserid@mit.edu...
+OK
+
+Name   
+dev 
+```
+Select the correct space `Name` and save it in a variable, e.g.,
+```
+space_name="dev"
+```
+#### 3.3 Lets set the targeted org and space 
+```
+bx target -o $org_name -s $space_name
+```
+### Step 4: Create a Watson ML Service Instance
+
+
+#### 4.1. Setup a Watson ML Instance
+```
+bx service create pm-20 lite CLI_WML_Instance
+bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
+```
+
+#### 4.2 Retrieve and save the ids for later use
+```
+instance_id=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2`
+username=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2`
+password=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2`
+url=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "url"| awk -F": " '{print $2}'| cut -d'"' -f2`
+```
+
+```
+export ML_INSTANCE=$instance_id
+export ML_USERNAME=$username
+export ML_PASSWORD=$password
+export ML_ENV=$url
+```
+
+### Step 5: Create a bucket in the Cloud to store your data
+
+A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is a huge "folder" in the cloud. 
+You use the bucket to put and get any file or folder (e.g., your datasets) using an api-style interface.
+
+#### 5.1. Create a cloud storage instance:
+
+First, lets create your own personal cloud storage instance to hold your bucket(s) and name the instance `my_instance`.
+
+```
+bx resource service-instance-create "my_instance" cloud-object-storage standard global
+bx resource service-instance "my_instance"
+```
+
+#### 5.2. Get security credentials:
+
+We then create and get the credentials to `my_instance` and naming it `my_cli_key` so that you can create and access your bucket.
+
+Create key, store it and print it:
 
 ```
 bx resource service-key-create "my_cli_key" Writer --instance-name "my_instance" --parameters '{"HMAC":true}' > /dev/null 2>&1
@@ -130,80 +146,62 @@ secret_access_key=`bx resource service-key my_cli_key | grep "secret_access_key"
 echo ""; echo "Credentials:"; echo "access_key_id - $access_key_id"; echo "secret_access_key - $secret_access_key"; echo ""
 ```
 
-Add `access_key_id` and `secret_access_key` to your awscli profile and name it `my_profile` (leave the other fields as None).
+#### 5.3 Save your keys in a profile so you can reuse them later
+
+Use `aws` tool to add `access_key_id` and `secret_access_key` to a profile and name it `my_profile` (leave the other fields as None).
 
 ```
 aws configure --profile my_profile
 ```
 
-Copy these keys! You'll need them again a little later.
-
-#### 4.3. Create a bucket:
-
-Now, we make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name.
-
+#### 5.4 Note these 2 keys! You'll need them again later to access your resources...
 ```
-bucket_name=<DEFINE_A_NAME>
+export MY_BUCKET_KEY = access_key_id
+export MY_BUCKET_SECRET_KEY = secret_access_key
 ```
 
-and run:
-
+#### 5.5. Create a bucket:
+Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, e.g., below we call the bucket "mybucket".  
 ```
+bucket_name="mybucket"
+
 aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net s3api create-bucket --bucket $bucket_name --profile my_profile 2>&1
 ```
 
-### Step 5: Create a Watson ML Instance
+##Congratulations you are done with the one-time SETUP!
 
-#### 5.1. Configure your account
+Now, to test that your setup is working, lets try a simple model.
 
-In order to run jobs on Watson, you will need to create an organization and space to hold your jobs. Organization names are also globally unique.
-
+### Step 0. Get a dataset 
+For example, lets get the cifar10 dataset and do a little trainning..
+You can get this dataset from the Internet, e.g., by doing:
 ```
-org_name=...
-space_name=...
-bx account org-create $org_name
-bx target -o $org_name
-bx account space-create $space_name
-bx target -o $org_name -s $space_name
-```
-
-#### 5.2. Setup a Watson ML Instance
-
-```
-bx service create pm-20 lite CLI_WML_Instance
-bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
-instance_id=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2`
-username=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2`
-password=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2`
-url=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "url"| awk -F": " '{print $2}'| cut -d'"' -f2`
-export ML_INSTANCE=$instance_id
-export ML_USERNAME=$username
-export ML_PASSWORD=$password
-export ML_ENV=$url
+mkdir cifar10
+cd cifar10
+wget https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz
+tar xvf cifar-10-python.tar.gz
+rm cifar-10-python.tar.gz
 ```
 
-### Step 6: Upload your dataset (CIFAR10) to your bucket: (Last setup step)
-
-This will upload our dataset to the bucket we created:
+### Step 1: Upload the dataset to your bucket:
 
 ```
 aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 cp cifar10/  s3://$bucket_name/cifar10 --recursive
 ```
 
-You have completed the one-time setup! Now, we can start sending jobs to Watson.
+### Step 2: Edit your manifest file, e.g., `pytorch-cifar.yml`
 
-### Step 7: Modify `pytorch-cifar.yml`
+This yaml file should hold all the information needed for executing the job, including what bucket, ml framework, and computing instance to use.
 
-This yaml file holds all the information needed for our job including what bucket, ml framework, and computing instance to use.
-
-#### 7.1. Copy the template manifest:
+#### 2.1. Copy the template manifest:
 
 ```
-cp pytorch-cifar-template.yml pytorch-cifar.yml
+cp pytorch-cifar-template.yml my-pytorch-cifar.yml
 ```
-#### 7.2. Edit `pytorch-cifar.yml`:
+#### 2.2. Edit `my-pytorch-cifar.yml`:
 
-Add your author info and replace the values of `aws_access_key_id`, `aws_secret_access_key`, and `bucket` in `pytorch-cifar.yml` with your storage instance credentials and your chosen bucket name from before for both the data and results references.
+Add your author info and replace the values of `aws_access_key_id`, `aws_secret_access_key`, and `bucket` in `my-pytorch-cifar.yml` with your storage instance credentials and your chosen bucket name.
+This should be done for both the data input reference (e.g., `training_data_reference`) and the output reference (e.g., `training_results_reference`). Notice that you may use the same bucket for both input and output, but this is not required.
 
 ```yaml
 model_definition:
@@ -212,11 +210,11 @@ model_definition:
     name: pytorch
     version: 0.3
 #name of the training-run
-  name: cifar10 in pytorch
+  name: MYRUN
 #Author name and email
   author:
-    name: John Doe
-    email: johndoe@ibm.com
+    name: JOHN DOE
+    email: JOHNDOE@MIT.EDU
   description: This is running cifar training on multiple models
   execution:
 #Command to execute -- see script parameters in later section !!
@@ -229,65 +227,67 @@ training_data_reference:
   name: training_data_reference_name
   connection:
     endpoint_url: "https://s3-api.us-geo.objectstorage.service.networklayer.com"
-    aws_access_key_id: < from cloud portal >
-    aws_secret_access_key: < from cloud portal >
+    aws_access_key_id: < YOUR SAVED ACCESS KEY >
+    aws_secret_access_key: < YOUR SAVED SECRET ACCESS KEY >
   source:
-    bucket: < bucket name >
+    bucket: < mybucketname >
   type: s3
 training_results_reference:
   name: training_results_reference_name
   connection:
     endpoint_url: "https://s3-api.us-geo.objectstorage.service.networklayer.com"
-    aws_access_key_id: < from cloud portal >
-    aws_secret_access_key: < from cloud portal >
+    aws_access_key_id: < YOUR SAVED ACCESS KEY >
+    aws_secret_access_key: < YOUR SAVED SECRET ACCESS KEY >
   target:
-    bucket: < bucket name >
+    bucket: < mybucketname >
   type: s3
 ```
 
-Notice that under execution in the yaml file, we have already specified a command that will be executed when the job reaches the server.
+Notice that under `execution` in the yaml file, we specified a command that will be executed 
+when the job starts execution at the server.
 
 ```
 python3 main.py --cifar_path ${DATA_DIR}/cifar10
       --checkpoint_path ${RESULT_DIR} --epochs 10
 ```
 
-This will execute main.py, which starts a training run of a specified model. Since no model is specified, it will train the default model, vgg16, for 10 epochs using the dataset in the bucket we created.
+This command will execute `main.py`, which starts a training run of a specified model. 
+Since no model is specified, it will train the default model, `vgg16`, 
+for 10 epochs using the dataset that we uploaded to the bucket. 
 
-### Step 8: Send code to run on Watson Studio!
+### Step 3: Send code to run on Watson Studio!
 
-#### 8.1. Zip code into a file:
+#### 3.1. Zip all the code and models into a .zip file:
 ```
 zip model.zip main.py models/*
 ```
 
-#### 8.2. Send your code and manifest to IBM Watson Studio:
+#### 3.2. Send your code and manifest to IBM Watson Studio:
 ```
 bx ml train model.zip pytorch-cifar.yml
 ```
 
-<img src="img/startrun.jpg" width=100%>
+<!-- img src="img/startrun.jpg" width=100%-->
 
 That's it! The command should generate a training ID for you, meaning our model has started training on Watson!
 
-
-### Step 9: Monitor training (Optional)
+### Step 4: Monitor the training (Optional)
 
 #### We can check the status of training using the `bx ml list` command:
 ```
 bx ml list training-runs
 ```
-<img src="img/listruns.jpg" width=100%>
+<!-- img src="img/listruns.jpg" width=100%-->
 
 #### We can also continuously monitor a training run by using the `bx ml monitor` command:
 ```
 bx ml monitor training-runs < trainingID >
 ```
-<img src="img/monitorruns.jpg" width=100%>
+<!--img src="img/monitorruns.jpg" width=100%-->
 
 As training proceeds, you should also see results from the training process being copied to the results bucket specified in your training job `yaml` file - `training_results_references.target bucket`.
 
-<img src="img/cloudstorage.jpg" width=100%>
+<!--img src="img/cloudstorage.jpg" width=100%-->
 
 You can also inspect the status of training by downloading and viewing the training log file which has been copied to the result bucket. This is useful in debugging errors and failed jobs.
 
@@ -296,100 +296,13 @@ You can also inspect the status of training by downloading and viewing the train
 aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 cp s3://my_bucket/ < trainingID Rig >/learner-1/training-log.txt -
 ```
 
-### Additional Information
+### Additional Information on Deep Learning in IBM Cloud
 
-See [https://dataplatform.ibm.com/docs/content/analyze-data/ml_dlaas_working_with_new_models.html](https://dataplatform.ibm.com/docs/content/analyze-data/ml_dlaas_working_with_new_models.html)
-
-
-## Using the tool
-```
-usage: main.py [-h] [-l] [--lr LR] [--resume] [--cifar_path CIFAR_PATH]
-               [--checkpoint_path CP] [--epochs EPOCHS]
-               [--model MODEL]
-
-PyTorch CIFAR10 Training
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -l                    lists all available models (default: False)
-  --lr LR               learning rate (default: 0.1)
-  --resume, -r          resume from checkpoint (default: False)
-  --cifar_path          path to cifar tar.gz (default: ./cifar10)
-  --checkpoint_path CP  checkpoint path (default: .)
-  --epochs EPOCHS       no of epochs (default: 10)
-  --model MODEL         Model type: vgg16,... (default: vgg16)
-```
-
-### Example for a vgg19:
-
-```
-# on local machine:
-python3 main.py --lr 0.01 --epochs 100 --model vgg19
-
-# in Watson Machine Learning yaml file:
-python3 main.py --cifar_path ${DATA_DIR}/cifar10
-      --checkpoint_path ${RESULT_DIR}
-      --epochs 100 --model vgg19 --lr 0.01
-```
-
-### Available Models:
-
-```
-DPN26  ( <function DPN26 at 0x1129dbc80> )
-DPN92  ( <function DPN92 at 0x112a01048> )
-DenseNet121  ( <function DenseNet121 at 0x1129e10d0> )
-DenseNet161  ( <function DenseNet161 at 0x1129e16a8> )
-DenseNet169  ( <function DenseNet169 at 0x1129e1598> )
-DenseNet201  ( <function DenseNet201 at 0x1129e1620> )
-GoogLeNet  ( <class 'models.googlenet.GoogLeNet'> )
-Inception  ( <class 'models.googlenet.Inception'> )
-LeNet  ( <class 'models.lenet.LeNet'> )
-MobileNet  ( <class 'models.mobilenet.MobileNet'> )
-MobileNetV2  ( <class 'models.mobilenetv2.MobileNetV2'> )
-PNASNetA  ( <function PNASNetA at 0x112a018c8> )
-PNASNetB  ( <function PNASNetB at 0x112a01ea0> )
-PreActBottleneck  ( <class 'models.preact_resnet.PreActBottleneck'> )
-PreActResNet101  ( <function PreActResNet101 at 0x1129ed730> )
-PreActResNet152  ( <function PreActResNet152 at 0x1129ed7b8> )
-PreActResNet18  ( <function PreActResNet18 at 0x1129ed1e0> )
-PreActResNet34  ( <function PreActResNet34 at 0x1129ed620> )
-PreActResNet50  ( <function PreActResNet50 at 0x1129ed6a8> )
-ResNeXt29_2x64d  ( <function ResNeXt29_2x64d at 0x1129eea60> )
-ResNeXt29_32x4d  ( <function ResNeXt29_32x4d at 0x1129ed0d0> )
-ResNeXt29_4x64d  ( <function ResNeXt29_4x64d at 0x1129eef28> )
-ResNeXt29_8x64d  ( <function ResNeXt29_8x64d at 0x1129ed048> )
-ResNet101  ( <function ResNet101 at 0x1129ee840> )
-ResNet152  ( <function ResNet152 at 0x1129ee8c8> )
-ResNet18  ( <function ResNet18 at 0x1129ee2f0> )
-ResNet34  ( <function ResNet34 at 0x1129ee730> )
-ResNet50  ( <function ResNet50 at 0x1129ee7b8> )
-SENet18  ( <function SENet18 at 0x112a01378> )
-SepConv  ( <class 'models.pnasnet.SepConv'> )
-ShuffleNet  ( <class 'models.shufflenet.ShuffleNet'> )
-ShuffleNetG2  ( <function ShuffleNetG2 at 0x1129e1c80> )
-ShuffleNetG3  ( <function ShuffleNetG3 at 0x1129ee158> )
-VGG11  ( config in  <class 'models.vgg.VGG'> )
-VGG13  ( config in  <class 'models.vgg.VGG'> )
-VGG16  ( config in  <class 'models.vgg.VGG'> )
-VGG19  ( config in  <class 'models.vgg.VGG'> )
-```
+- [Deep Learning in IBM Studio](https://www.ibm.com/cloud/deep-learning)
+- [Deep Learning Documentation](https://dataplatform.ibm.com/docs/content/analyze-data/ml_dlaas_working_with_new_models.html)
 
 
-
-
-### Accuracy as reported by `kuangliu`:
-| Model             | Acc.        |
-| ----------------- | ----------- |
-| [VGG16](https://arxiv.org/abs/1409.1556)              | 92.64%      |
-| [ResNet18](https://arxiv.org/abs/1512.03385)          | 93.02%      |
-| [ResNet50](https://arxiv.org/abs/1512.03385)          | 93.62%      |
-| [ResNet101](https://arxiv.org/abs/1512.03385)         | 93.75%      |
-| [MobileNetV2](https://arxiv.org/abs/1801.04381)       | 94.43%      |
-| [ResNeXt29(32x4d)](https://arxiv.org/abs/1611.05431)  | 94.73%      |
-| [ResNeXt29(2x64d)](https://arxiv.org/abs/1611.05431)  | 94.82%      |
-| [DenseNet121](https://arxiv.org/abs/1608.06993)       | 95.04%      |
-| [PreActResNet18](https://arxiv.org/abs/1603.05027)    | 95.11%      |
-| [DPN92](https://arxiv.org/abs/1707.01629)             | 95.16%      |
 
 ## Enjoy
-Hendrik Strobelt (IBM Research), Evan Phibbs (IBM Research), Victor C. Dibia (IBM Research)
+Content derived from material provided by Hendrik Strobelt (IBM Research), Evan Phibbs (IBM Research), Victor C. Dibia (IBM Research)
+
