@@ -168,7 +168,7 @@ bucket_name="mybucket"
 aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net s3api create-bucket --bucket $bucket_name --profile my_profile 2>&1
 ```
 
-##Congratulations you are done with the one-time SETUP!
+## Congratulations you are done with the one-time SETUP!
 
 Now, to test that your setup is working, lets try a simple model.
 
@@ -277,17 +277,17 @@ That's it! The command should generate a training ID for you, meaning our model 
 ```
 bx ml list training-runs
 ```
-<!-- img src="img/listruns.jpg" width=100%-->
+<-- img src="img/listruns.jpg" width=100%-->
 
 #### We can also continuously monitor a training run by using the `bx ml monitor` command:
 ```
 bx ml monitor training-runs < trainingID >
 ```
-<!--img src="img/monitorruns.jpg" width=100%-->
+<--img src="img/monitorruns.jpg" width=100%-->
 
 As training proceeds, you should also see results from the training process being copied to the results bucket specified in your training job `yaml` file - `training_results_references.target bucket`.
 
-<!--img src="img/cloudstorage.jpg" width=100%-->
+<--img src="img/cloudstorage.jpg" width=100%-->
 
 You can also inspect the status of training by downloading and viewing the training log file which has been copied to the result bucket. This is useful in debugging errors and failed jobs.
 
