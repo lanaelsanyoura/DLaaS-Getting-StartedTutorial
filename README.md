@@ -22,9 +22,9 @@ Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
 ##### Verify that you have access to `1589313—IBM` account:
 Click on the profile avatar in the right-top-corner.
 Under the account you can switch to AI Lab account by choosing 1589313—IBM account.
-<img src="img/i2.png" width=100%>
+<img src="img/i2.png" >
 Verify your CLOUD FOUNDRY ORG in the Dashboard, it should be `MITIBMWatsonAiLab`
-<img src="img/i1.png" width=100%>
+<img src="img/i1.png">
 
 Please contact `noor.fairoza@ibm.com` if you are d NOT have access to `1589313—IBM` account
 
@@ -79,7 +79,7 @@ Create an API key and save it somewhere secure.
 
 Note: Please do NOT share this key with anyone. 
 
-<img src="img/i3.png" width=100%>
+<img src="img/i3.png">
 
 Now we will create data and service resources in the IBM Cloud. First we login. (Use your API key from above)
 ```
