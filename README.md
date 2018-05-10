@@ -134,7 +134,7 @@ bx target -o $org_name -s $space_name
 
 #### MIT-IBM Watson AI Lab users:
 You can use the below command to targetcorrect org, spacee and region
-`bx login -o MITIBMWatsonAiLab -a api.ng.bluemix.net -r us-south -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
+`bx login -o MITIBMWatsonAiLab -a api.ng.bluemix.net -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
 
 ### Step 4: Create a Watson ML Service Instance
 
