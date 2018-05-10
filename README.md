@@ -63,7 +63,13 @@ bx plugin install machine-learning
 ```
 
 #### Step 2. Login to IBM Cloud account:
-##### 2.1 Get an Api-key:
+
+Now we will create data and service resources in the IBM Cloud. First we login.
+```
+bx login
+```
+or
+##### 2.2 Login Using API Key:   Get an Api-key:
 Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
 click here: [https://console.bluemix.net/iam/#/apikeys](https://console.bluemix.net/iam/#/apikeys)
 or
@@ -77,7 +83,7 @@ Note: Please do NOT share this key with anyone.
 
 Now we will create data and service resources in the IBM Cloud. First we login. (Use your API key from above)
 ```
-bx login --api-key <your_api_key>
+bx login --apikey <your_api_key>
 ```
 ### 3. Configure your account to access IBM Cloud 
 
@@ -127,8 +133,8 @@ bx target -o $org_name -s $space_name
 ```
 
 #### MIT-IBM Watson AI Lab users:
-You can use the belo command to targetcorrect org, spacee and region
-`bx login -o MITIBMWatsonAiLab -a  api.ng.bluemix.net -r us-south -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
+You can use the below command to targetcorrect org, spacee and region
+`bx login -o MITIBMWatsonAiLab -a api.ng.bluemix.net -r us-south -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
 
 ### Step 4: Create a Watson ML Service Instance
 
@@ -139,19 +145,12 @@ You can use the belo command to targetcorrect org, spacee and region
 bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
 ```
 
-#### 4.2 Retrieve and save the ids for later use
+#### 4.2 Set up Environment variables
 ```
-instance_id=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2`
-username=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2`
-password=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2`
-url=`bx service key-show CLI_WML_Instance cli_key_CLI_WML_Instance | grep "url"| awk -F": " '{print $2}'| cut -d'"' -f2`
-```
-
-```
-export ML_INSTANCE=$instance_id
-export ML_USERNAME=$username
-export ML_PASSWORD=$password
-export ML_ENV=$url
+export ML_INSTANCE=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name> | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2` 
+export ML_USERNAME=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name> | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2` 
+export ML_PASSWORD=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name>| grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2` 
+export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>| grep "url"| awk -F": " '{print $2}'| cut -d'"' -f2`
 ```
 
 ### Step 5: Create a bucket in the Cloud to store your data
@@ -166,6 +165,7 @@ First, lets create your own personal cloud storage instance to hold your bucket(
 ```
 bx resource service-instance-create "my_instance" cloud-object-storage standard global
 bx resource service-instance "my_instance"
+
 ```
 
 #### 5.2. Get security credentials:
@@ -180,6 +180,7 @@ access_key_id=`bx resource service-key my_cli_key | grep "access_key_id"| cut -d
 secret_access_key=`bx resource service-key my_cli_key | grep "secret_access_key"| cut -d\:  -f2`
 echo ""; echo "Credentials:"; echo "access_key_id - $access_key_id"; echo "secret_access_key - $secret_access_key"; echo ""
 ```
+Save your keys
 
 #### 5.3 Save your keys in a profile so you can reuse them later
 
