@@ -343,3 +343,27 @@ aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile m
 ## Enjoy
 Content derived from material provided by Hendrik Strobelt (IBM Research), Evan Phibbs (IBM Research), Victor C. Dibia (IBM Research)
 
+
+### Other useful commands
+
+#### Download Trained model files
+` aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 cp s3://$bucket_name/<training run ID> ./trainedmodel --recursive
+ls ./trainedmodel `
+ 
+#### List the buckets
+`aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net s3api list-buckets --profile <PROFILE_NAME>`
+
+#### List the contents of your bucket
+`aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 ls s3://$bucket_name/`
+
+#### Query status of the job
+`bx ml show training-runs <training run ID>`
+
+#### Check the status of your training jobs
+`bx ml list training-runs `
+
+#### View log files
+`aws cli aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net s3 ls s3://$bucket_name/<training_id>/learner-1/`
+
+#### Delete files from you bucket
+`aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 rm s3://$bucket_name/fileOrDirectoryName  --recursive` 
