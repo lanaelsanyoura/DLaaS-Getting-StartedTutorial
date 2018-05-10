@@ -3,7 +3,7 @@
 ## How can I run code on IBM Cloud [Watson Studio](https://www.ibm.com/cloud/watson-studio)?
 
 Here are the setup steps to to use the Machine Learing (ML) service.
-**NB: These steps use a Command Line Interface (CLI). There is an alternative browser used interface** 
+**Note: These steps use a Command Line Interface (CLI). There is an alternative browser used interface** 
 
 What we will do as a one time Setup:
 
@@ -18,6 +18,15 @@ What we will do as a one time Setup:
 
 Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
 (If you are part of the IBM-MIT AI lab, but do NOT have a valid account, please contact noor.fairoza@ibm.com)
+#### MIT-IBM Watson AI Lab users:
+##### Verify that you have access to `1589313—IBM` account:
+Click on the profile avatar in the right-top-corner.
+Under the account you can switch to AI Lab account by choosing 1589313—IBM account.
+<img src="img/i2.png" width=100%>
+Verify your CLOUD FOUNDRY ORG in the Dashboard, it should be `MITIBMWatsonAiLab`
+<img src="img/i1.png" width=100%>
+
+Please contact `noor.fairoza@ibm.com` if you are d NOT have access to `1589313—IBM` account
 
 ### Step 1: Install CLI tools in your local machine (laptop) to remotely access your Cloud resources
 
