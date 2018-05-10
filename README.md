@@ -35,15 +35,25 @@ Please contact `noor.fairoza@ibm.com` if you are d NOT have access to `1589313â€
 
 Download [bx CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
 and install it, following the instructions for your local machine operating system (OSX, Linux or Windows)
+`curl -fsSL https://clis.ng.bluemix.net/install/osx | sh`
+or
+`curl -fsSL https://clis.ng.bluemix.net/install/linux | sh`
+
 
 #### 1.2. Install `awscli` using [pip](https://pypi.org/project/pip/)
 
 The [aws CLI](https://docs.aws.amazon.com/cli/latest/userguide/) lets you setup and upload data to your buckets. (Will get to this later)
 
+Note: Please install latest version of awscli
 ```
 pip install awscli
 ```
-
+or
+```
+curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+unzip awscli-bundle.zip
+./awscli-bundle/install -b ~/bin/aws
+```
 #### 1.3. Install `bx` machine-learning plugin
 
 The `machine-learning` plugin for `bx` lets you start, view, and stop your Machine Learning jobs on Watson.
@@ -53,11 +63,22 @@ bx plugin install machine-learning
 ```
 
 #### Step 2. Login to IBM Cloud account:
-Now we will create data and service resources in the IBM Cloud. First we login.
-```
-bx login
-```
+##### 2.1 Get an Api-key:
+Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
+click here: [https://console.bluemix.net/iam/#/apikeys](https://console.bluemix.net/iam/#/apikeys)
+or
+Click on Manage --> Security --> Platform API Keys
 
+Create an API key and save it somewhere secure. 
+
+Note: Please do NOT share this key with anyone. 
+
+<img src="img/i3.png" width=100%>
+
+Now we will create data and service resources in the IBM Cloud. First we login. (Use your API key from above)
+```
+bx login --api-key <your_api_key>
+```
 ### 3. Configure your account to access IBM Cloud 
 
 In order to run jobs on Watson, you need an `organization` (also called `org`) and a `space` to hold your jobs. 
@@ -104,12 +125,17 @@ space_name="dev"
 ```
 bx target -o $org_name -s $space_name
 ```
+
+#### MIT-IBM Watson AI Lab users:
+You can use the belo command to targetcorrect org, spacee and region
+`bx login -o MITIBMWatsonAiLab -a  api.ng.bluemix.net -r us-south -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
+
 ### Step 4: Create a Watson ML Service Instance
 
+`bx service create pm-20 standard <your_Instance_Name>`
 
-#### 4.1. Setup a Watson ML Instance
+#### 4.1. Setup a Watson ML Instance : Create WML Access key
 ```
-bx service create pm-20 lite CLI_WML_Instance
 bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
 ```
 
