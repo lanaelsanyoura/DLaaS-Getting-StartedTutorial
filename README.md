@@ -371,8 +371,7 @@ aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile m
 
 
 ## Enjoy
-Content derived from material provided by Hendrik Strobelt (IBM Research), Evan Phibbs (IBM Research), Victor C. Dibia (IBM Research)
-
+Content derived from material provided by Kaouta el Maghraoui (IBM Research), German Goldszmidt (IBM Research).
 
 ### Other useful commands
 
