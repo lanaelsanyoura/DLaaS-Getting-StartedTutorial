@@ -218,9 +218,6 @@ aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net --profile <P
 ## Tutorial
 Now, to test that your setup is working, lets try a simple model.
 
-`Data/code used in this tutorial can be found in this box folder:
-https://ibm.box.com/s/mnqgz3lpf2qgcfzd19y4b784r79l1u08`
-
 Step 0: Get a dataset
 Step 1: Upload your dataset to the bucket
 Step 2: Edit your manifest file
@@ -253,7 +250,6 @@ aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile m
 
 
 ### Step 2: Edit your manifest file, e.g., `pytorch-cifar.yml`
-You can donwload the template from `https://ibm.box.com/s/j5bdj1ymvyn24tulshodakl2qqnygvrt`
 
 This yaml file should hold all the information needed for executing the job, including what bucket, ml framework, and computing instance to use.
 
