@@ -14,7 +14,7 @@ What we will do as a one time Setup:
 4. Create a Watson ML Instance
 5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
  
-### Step 0: Confirm that you have a valid account on IBM Cloud. 
+## Step 0: Confirm that you have a valid account on IBM Cloud. 
 
 Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
 (If you are part of the IBM-MIT AI lab, but do NOT have a valid account, please contact noor.fairoza@ibm.com)
@@ -28,7 +28,7 @@ Verify your CLOUD FOUNDRY ORG in the Dashboard, it should be `MITIBMWatsonAiLab`
 
 Please contact `noor.fairoza@ibm.com` if you are d NOT have access to `1589313—IBM` account
 
-### Step 1: Install CLI tools in your local machine (laptop) to remotely access your Cloud resources
+## Step 1: Install CLI tools in your local machine (laptop) to remotely access your Cloud resources
 
 #### 1.1. Download and Install the IBM Cloud CLI: `bx`
 'bx' allows you to start and manage resources (e.g., applications, containers, services, ...) in the IBM cloud. 
@@ -62,7 +62,7 @@ The `machine-learning` plugin for `bx` lets you start, view, and stop your Machi
 bx plugin install machine-learning
 ```
 
-#### Step 2. Login to IBM Cloud account:
+## Step 2. Login to IBM Cloud account:
 
 Now we will create data and service resources in the IBM Cloud. First we login.
 ```
@@ -85,7 +85,10 @@ Now we will create data and service resources in the IBM Cloud. First we login. 
 ```
 bx login --apikey <your_api_key>
 ```
-### 3. Configure your account to access IBM Cloud 
+
+
+
+## 3. Configure your account to access IBM Cloud 
 
 In order to run jobs on Watson, you need an `organization` (also called `org`) and a `space` to hold your jobs. 
 `Org` names are also globally unique. 
@@ -132,11 +135,13 @@ space_name="dev"
 bx target -o $org_name -s $space_name
 ```
 
-#### MIT-IBM Watson AI Lab users:
-You can use the below command to targetcorrect org, spacee and region
+#### MIT-IBM Watson AI Lab users only:
+You can use the below command to target correct org, space and region for ailab projects.
 `bx login -o MITIBMWatsonAiLab -a api.ng.bluemix.net -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
 
-### Step 4: Create a Watson ML Service Instance
+
+
+## Step 4: Create a Watson ML Service Instance
 
 `bx service create pm-20 standard <your_Instance_Name>`
 
@@ -153,7 +158,9 @@ export ML_PASSWORD=`bx service key-show <your_Instance_Name>  <your_Instance_Key
 export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>| grep "url"| awk -F": " '{print $2}'| cut -d'"' -f2`
 ```
 
-### Step 5: Create a bucket in the Cloud to store your data
+
+
+## Step 5: Create a bucket in the Cloud to store your data
 
 A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is a huge "folder" in the cloud. 
 You use the bucket to put and get any file or folder (e.g., your datasets) using an api-style interface.
@@ -180,33 +187,45 @@ access_key_id=`bx resource service-key my_cli_key | grep "access_key_id"| cut -d
 secret_access_key=`bx resource service-key my_cli_key | grep "secret_access_key"| cut -d\:  -f2`
 echo ""; echo "Credentials:"; echo "access_key_id - $access_key_id"; echo "secret_access_key - $secret_access_key"; echo ""
 ```
-Save your keys
+Save your keys.(note it down)
+You'll need them again later to access your resources...
+```
+export MY_BUCKET_KEY = $access_key_id
+export MY_BUCKET_SECRET_KEY = $secret_access_key
+```
 
-#### 5.3 Save your keys in a profile so you can reuse them later
+#### 5.3 Create and configure your aws profile.
 
-Use `aws` tool to add `access_key_id` and `secret_access_key` to a profile and name it `my_profile` (leave the other fields as None).
+Use `aws` tool to add `access_key_id` and `secret_access_key` to a profile and give any name to your profile. say, `my_profile` (leave the other fields as None).
 
 ```
 aws configure --profile my_profile
 ```
 
-#### 5.4 Note these 2 keys! You'll need them again later to access your resources...
-```
-export MY_BUCKET_KEY = access_key_id
-export MY_BUCKET_SECRET_KEY = secret_access_key
-```
+Provide `access_key_id` and `secret_access_key` when requested. Press enter if anything else is requested. [none]
+
+
 
 #### 5.5. Create a bucket:
 Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, e.g., below we call the bucket "mybucket".  
 ```
 bucket_name="mybucket"
-
-aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net s3api create-bucket --bucket $bucket_name --profile my_profile 2>&1
+aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3api create-bucket --bucket <your-bucket-name>
 ```
 
 ## Congratulations you are done with the one-time SETUP!
 
+## Tutorial
 Now, to test that your setup is working, lets try a simple model.
+
+`Data/code used in this tutorial can be found in this box folder:
+https://ibm.box.com/s/mnqgz3lpf2qgcfzd19y4b784r79l1u08`
+
+Step 0: Get a dataset
+Step 1: Upload your dataset to the bucket
+Step 2: Edit your manifest file
+Step 3: Send code to run on Watson Studio!
+Step 4: Monitor the training
 
 ### Step 0. Get a dataset 
 For example, lets get the cifar10 dataset and do a little trainning..
@@ -218,18 +237,29 @@ wget https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz
 tar xvf cifar-10-python.tar.gz
 rm cifar-10-python.tar.gz
 ```
+or
+
+Download all the data from this link `https://ibm.box.com/s/5ss0adenqf4dow9bqynb687cuu1oh79q`
+
 
 ### Step 1: Upload the dataset to your bucket:
 
 ```
 aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 cp cifar10/  s3://$bucket_name/cifar10 --recursive
 ```
+(optional) You could verify if the data is successfully uploaded using this comand.
+
+`aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 ls s3://$bucket_name/cifar10`
+
 
 ### Step 2: Edit your manifest file, e.g., `pytorch-cifar.yml`
+You can donwload the template from `https://ibm.box.com/s/j5bdj1ymvyn24tulshodakl2qqnygvrt`
 
 This yaml file should hold all the information needed for executing the job, including what bucket, ml framework, and computing instance to use.
 
+
 #### 2.1. Copy the template manifest:
+Get your compy from the template.
 
 ```
 cp pytorch-cifar-template.yml my-pytorch-cifar.yml
@@ -280,7 +310,7 @@ training_results_reference:
 ```
 
 Notice that under `execution` in the yaml file, we specified a command that will be executed 
-when the job starts execution at the server.
+when the job starts execution at the server. (make sure you give right path to data)
 
 ```
 python3 main.py --cifar_path ${DATA_DIR}/cifar10
@@ -359,11 +389,8 @@ ls ./trainedmodel `
 #### Query status of the job
 `bx ml show training-runs <training run ID>`
 
-#### Check the status of your training jobs
-`bx ml list training-runs `
-
 #### View log files
 `aws cli aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net s3 ls s3://$bucket_name/<training_id>/learner-1/`
 
-#### Delete files from you bucket
+#### Delete files from your bucket
 `aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 rm s3://$bucket_name/fileOrDirectoryName  --recursive` 
