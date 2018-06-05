@@ -5,14 +5,56 @@
 Here are the setup steps to to use the Machine Learing (ML) service.
 **Note: These steps use a Command Line Interface (CLI). There is an alternative browser used interface** 
 
-What we will do as a one time Setup:
+### Steps for one time Setup:
 
-0. Confirm that you have an IBM Cloud userid
-1. Download [CLI tools](https://console.bluemix.net/docs/cli/index.html#overview) to access and manage resources in the IBM Cloud
-2. Login thru the CLI to your IBM Cloud account
-3. Configure your IBM Cloud account. 
-4. Create a Watson ML Instance
-5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
+Step 0. Confirm that you have an IBM Cloud userid
+Step 1. Download [CLI tools](https://console.bluemix.net/docs/cli/index.html#overview) to access and manage resources in the IBM Cloud
+      
+      1.1 Download and Install the IBM Cloud CLI
+      1.2 Install `awscli`
+      1.3 Install `bx` machine-learning plugin
+      
+Step 2. Login thru the CLI to your IBM Cloud account
+      2.1 Login using password
+      2.2 Login Using API Key
+            a.Get an Api-key
+            b.login
+            
+Step 3. Configure your IBM Cloud account. 
+     3.1 Use an existing org
+     3.2 Use an existing space
+     3.3 Target correct org and space
+          Note for MIT IBM Watson AI lab users
+     
+Step 4. Create a Watson ML Instance
+    4.1 Setup a Watson ML Instance : Create WML Access key
+    4.2 Set up Environment variables
+    
+Step 5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
+    5.1. Create a cloud storage instance
+    5.2. Get security credentials
+    5.3 Create and configure your aws profile
+    5.4. Create an alias
+    5.5. Create a bucket
+ 
+ ### Steps for the Demo:
+ Step 0: Get a dataset
+ 
+ Step 1: Upload your dataset to the bucket
+ 
+ Step 2: Edit your manifest file
+    2.1. Copy the template manifest
+    2.2. Edit the configuration file
+    
+ Step 3: Send code to run on Watson Studio!
+    3.1. Zip all the code and models into a .zip file
+    3.2. Send your code and manifest to IBM Watson Studio
+    
+ Step 4: Monitor the training
+ 
+ ### Additional Information on Deep Learning in IBM Cloud
+ ### Other useful commands
+ 
  
 ## Step 0: Confirm that you have a valid account on IBM Cloud. 
 
@@ -63,12 +105,19 @@ bx plugin install machine-learning
 ```
 
 ## Step 2. Login to IBM Cloud account:
+##### 2.1. Login using password 
 
 Now we will create data and service resources in the IBM Cloud. First we login.
 ```
 bx login
 ```
+IBM employees can use
+```
+bx login --sso
+```
+
 or
+
 ##### 2.2 Login Using API Key:   Get an Api-key:
 Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
 click here: [https://console.bluemix.net/iam/#/apikeys](https://console.bluemix.net/iam/#/apikeys)
@@ -80,6 +129,8 @@ Create an API key and save it somewhere secure.
 Note: Please do NOT share this key with anyone. 
 
 <img src="img/i3.png">
+
+Login:
 
 Now we will create data and service resources in the IBM Cloud. First we login. (Use your API key from above)
 ```
@@ -113,7 +164,7 @@ org_name="MITIBMWatsonAiLab"
 bx target -o $org_name
 ```
 
-#### 3.2 Use your own space
+#### 3.2 Use an existing space
 Now lets find out the name of the `space` for you under the `org`. 
 ```
 bx account spaces
@@ -130,7 +181,7 @@ Select the correct space `Name` and save it in a variable, e.g.,
 ```
 space_name="dev"
 ```
-#### 3.3 Lets set the targeted org and space 
+#### 3.3 Target correct org and space
 ```
 bx target -o $org_name -s $space_name
 ```
@@ -147,6 +198,7 @@ Note: -  Learner Image versions that are supported by WML [https://github.ibm.co
 `bx service create pm-20 standard <your_Instance_Name>`
 
 #### 4.1. Setup a Watson ML Instance : Create WML Access key
+
 ```
 bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
 ```
@@ -266,13 +318,15 @@ This yaml file should hold all the information needed for executing the job, inc
 
 
 #### 2.1. Copy the template manifest:
+
 Get your compy from the template.
 
 ```
 cp pytorch-cifar-template.yml my-pytorch-cifar.yml
 ```
-#### 2.2. Edit `my-pytorch-cifar.yml`:
+#### 2.2. Edit the configuration file:
 
+Edit `my-pytorch-cifar.yml`:
 Add your author info and replace the values of `aws_access_key_id`, `aws_secret_access_key`, and `bucket` in `my-pytorch-cifar.yml` with your storage instance credentials and your chosen bucket name.
 This should be done for both the data input reference (e.g., `training_data_reference`) and the output reference (e.g., `training_results_reference`). Notice that you may use the same bucket for both input and output, but this is not required.
 
