@@ -8,6 +8,7 @@ Here are the setup steps to to use the Machine Learing (ML) service.
 ### Steps for one time Setup:
 
 Step 0. Confirm that you have an IBM Cloud userid
+
 Step 1. Download [CLI tools](https://console.bluemix.net/docs/cli/index.html#overview) to access and manage resources in the IBM Cloud
       
       1.1 Download and Install the IBM Cloud CLI
