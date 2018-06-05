@@ -79,9 +79,9 @@ Step 5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage
  Step 4: Monitor the training
  
  
- ### Additional Information on Deep Learning in IBM Cloud
+ Additional Information on Deep Learning in IBM Cloud
  
- ### Other useful commands
+ Other useful commands
  
  
 ## Step 0: Confirm that you have a valid account on IBM Cloud. 
