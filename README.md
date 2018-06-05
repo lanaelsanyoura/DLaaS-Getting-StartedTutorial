@@ -142,6 +142,7 @@ You can use the below command to target correct org, space and region for ailab 
 
 
 ## Step 4: Create a Watson ML Service Instance
+Note: -  Learner Image versions that are supported by WML [https://github.ibm.com/deep-learning-platform/dlaas/wiki/Learner-Image-details](https://github.ibm.com/deep-learning-platform/dlaas/wiki/Learner-Image-details)
 
 `bx service create pm-20 standard <your_Instance_Name>`
 
@@ -152,13 +153,11 @@ bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
 
 #### 4.2 Set up Environment variables
 ```
-export ML_INSTANCE=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name> | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2` 
-export ML_USERNAME=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name> | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2` 
-export ML_PASSWORD=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name>| grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2` 
-export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>| grep "url"| awk -F": " '{print $2}'| cut -d'"' -f2`
+export ML_INSTANCE=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name> | gawk '/instance_id/ {gsub("\"","");print $2}' 
+export ML_USERNAME=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name> | gawk '/username/ {gsub("\"","");print $2}' 
+export ML_PASSWORD=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name>| gawk '/password/ {gsub("\"","");print $2}' 
+export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>| gawk '/url/ {gsub("\"","");print $2}'
 ```
-
-
 
 ## Step 5: Create a bucket in the Cloud to store your data
 
