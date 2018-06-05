@@ -164,9 +164,10 @@ export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>
 A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is a huge "folder" in the cloud. 
 You use the bucket to put and get any file or folder (e.g., your datasets) using an api-style interface.
 
+
 #### 5.1. Create a cloud storage instance:
 
-First, lets create your own personal cloud storage instance to hold your bucket(s) and name the instance `my_instance`.
+lets create your own personal cloud storage instance to hold your bucket(s) and name the instance `my_instance`.
 
 ```
 bx resource service-instance-create "my_instance" cloud-object-storage standard global
@@ -203,13 +204,24 @@ aws configure --profile my_profile
 
 Provide `access_key_id` and `secret_access_key` when requested. Press enter if anything else is requested. [none]
 
+#### 5.4. Create an alias:
+
+First, lets create an alias for repeating parts of the command.
+
+Mac OS users:
+`alias aws='aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net'`
+
+Windows OS users:
+`doskey aws=aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net $*`
+
 
 
 #### 5.5. Create a bucket:
+
 Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, e.g., below we call the bucket "mybucket".  
 ```
 bucket_name="mybucket"
-aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3api create-bucket --bucket <your-bucket-name>
+aws --profile <PROFILE_NAME> s3api create-bucket --bucket <your-bucket-name>
 ```
 
 ## Congratulations you are done with the one-time SETUP!
@@ -241,11 +253,11 @@ Download all the data from this link `https://ibm.box.com/s/5ss0adenqf4dow9bqynb
 ### Step 1: Upload the dataset to your bucket:
 
 ```
-aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 cp cifar10/  s3://$bucket_name/cifar10 --recursive
+aws  --profile my_profile s3 cp cifar10/  s3://$bucket_name/cifar10 --recursive
 ```
 (optional) You could verify if the data is successfully uploaded using this comand.
 
-`aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 ls s3://$bucket_name/cifar10`
+`aws --profile my_profile s3 ls s3://$bucket_name/cifar10`
 
 
 ### Step 2: Edit your manifest file, e.g., `pytorch-cifar.yml`
@@ -355,7 +367,7 @@ This is useful in debugging errors and failed jobs.
 
 #### To do this, we run:
 ```
-aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile my_profile s3 cp s3://my_bucket/ < trainingID Rig >/learner-1/training-log.txt -
+aws --profile my_profile s3 cp s3://my_bucket/ < trainingID Rig >/learner-1/training-log.txt -
 ```
 
 ### Additional Information on Deep Learning in IBM Cloud
@@ -371,20 +383,20 @@ Content derived from material provided by Kaouta el Maghraoui (IBM Research), Ge
 ### Other useful commands
 
 #### Download Trained model files
-` aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 cp s3://$bucket_name/<training run ID> ./trainedmodel --recursive
+` aws  --profile <PROFILE_NAME> s3 cp s3://$bucket_name/<training run ID> ./trainedmodel --recursive
 ls ./trainedmodel `
  
 #### List the buckets
-`aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net s3api list-buckets --profile <PROFILE_NAME>`
+`aws  s3api list-buckets --profile <PROFILE_NAME>`
 
 #### List the contents of your bucket
-`aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 ls s3://$bucket_name/`
+`aws ---profile <PROFILE_NAME> s3 ls s3://$bucket_name/`
 
 #### Query status of the job
 `bx ml show training-runs <training run ID>`
 
 #### View log files
-`aws cli aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net s3 ls s3://$bucket_name/<training_id>/learner-1/`
+`aws cli aws s3 ls s3://$bucket_name/<training_id>/learner-1/`
 
 #### Delete files from your bucket
-`aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net --profile <PROFILE_NAME> s3 rm s3://$bucket_name/fileOrDirectoryName  --recursive` 
+`aws --profile <PROFILE_NAME> s3 rm s3://$bucket_name/fileOrDirectoryName  --recursive` 
