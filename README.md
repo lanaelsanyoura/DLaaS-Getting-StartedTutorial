@@ -11,48 +11,75 @@ Step 0. Confirm that you have an IBM Cloud userid
 Step 1. Download [CLI tools](https://console.bluemix.net/docs/cli/index.html#overview) to access and manage resources in the IBM Cloud
       
       1.1 Download and Install the IBM Cloud CLI
+      
       1.2 Install `awscli`
+      
       1.3 Install `bx` machine-learning plugin
       
 Step 2. Login thru the CLI to your IBM Cloud account
+
       2.1 Login using password
+      
       2.2 Login Using API Key
+      
             a.Get an Api-key
+            
             b.login
             
+            
 Step 3. Configure your IBM Cloud account. 
+
      3.1 Use an existing org
+     
      3.2 Use an existing space
+     
      3.3 Target correct org and space
+     
           Note for MIT IBM Watson AI lab users
      
 Step 4. Create a Watson ML Instance
+
     4.1 Setup a Watson ML Instance : Create WML Access key
+    
     4.2 Set up Environment variables
     
+    
 Step 5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
+
     5.1. Create a cloud storage instance
+    
     5.2. Get security credentials
+    
     5.3 Create and configure your aws profile
+    
     5.4. Create an alias
+    
     5.5. Create a bucket
+    
  
  ### Steps for the Demo:
+ 
  Step 0: Get a dataset
  
  Step 1: Upload your dataset to the bucket
  
  Step 2: Edit your manifest file
+ 
     2.1. Copy the template manifest
+    
     2.2. Edit the configuration file
     
  Step 3: Send code to run on Watson Studio!
+ 
     3.1. Zip all the code and models into a .zip file
+    
     3.2. Send your code and manifest to IBM Watson Studio
     
  Step 4: Monitor the training
  
+ 
  ### Additional Information on Deep Learning in IBM Cloud
+ 
  ### Other useful commands
  
  
