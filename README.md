@@ -1,61 +1,32 @@
 # MITIBMCloud
 
-## How can I run code on IBM Cloud [Watson Studio](https://www.ibm.com/cloud/watson-studio)?
 
-Here are the setup steps to to use the Machine Learing (ML) service.
 **Note: These steps use a Command Line Interface (CLI). There is an alternative browser used interface** 
 
 ### Steps for one time Setup:
 
-Step 0. Confirm that you have an IBM Cloud userid
+Step 0. Confirm that you have completed the Pre requisites
 
-Step 1. Download [CLI tools](https://console.bluemix.net/docs/cli/index.html#overview) to access and manage resources in the IBM Cloud
-      
-      1.1 Download and Install the IBM Cloud CLI
-      
-      1.2 Install `awscli`
-      
-      1.3 Install `bx` machine-learning plugin
-      
-Step 2. Login thru the CLI to your IBM Cloud account
+Step 1. Login to your bluemix account
 
-      2.1 Login using password
-      
-      2.2 Login Using API Key
-      
-            a.Get an Api-key
-            
-            b.login
-            
-            
-Step 3. Configure your IBM Cloud account. 
+Step 2. Create a Watson ML Instance
 
-     3.1 Use an existing org
-     
-     3.2 Use an existing space
-     
-     3.3 Target correct org and space
-     
-          Note for MIT IBM Watson AI lab users
-     
-Step 4. Create a Watson ML Instance
+    2.1 Setup a Watson ML Instance : Create WML Access key
+    
+    2.2 Set up Environment variables
+    
+    
+Step 3. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
 
-    4.1 Setup a Watson ML Instance : Create WML Access key
+    3.1. Create a cloud storage instance
     
-    4.2 Set up Environment variables
+    3.2. Get security credentials
     
+    3.3 Create and configure your aws profile
     
-Step 5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage/faq) Instance to store your data.
-
-    5.1. Create a cloud storage instance
+    3.4. Create an alias
     
-    5.2. Get security credentials
-    
-    5.3 Create and configure your aws profile
-    
-    5.4. Create an alias
-    
-    5.5. Create a bucket
+    3.5. Create a bucket
     
  
  ### Steps for the Demo:
@@ -84,154 +55,32 @@ Step 5. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage
  Other useful commands
  
  
-## Step 0: Confirm that you have a valid account on IBM Cloud. 
+## Step 0: [Pre-requisites] (https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md)
 
-Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
-(If you are part of the IBM-MIT AI lab, but do NOT have a valid account, please contact noor.fairoza@ibm.com)
-#### MIT-IBM Watson AI Lab users:
-##### Verify that you have access to `1589313—IBM` account:
-Click on the profile avatar in the right-top-corner.
-Under the account you can switch to AI Lab account by choosing 1589313—IBM account.
-<img src="img/i2.png" >
-Verify your CLOUD FOUNDRY ORG in the Dashboard, it should be `MITIBMWatsonAiLab`
-<img src="img/i1.png">
-
-Please contact `noor.fairoza@ibm.com` if you are d NOT have access to `1589313—IBM` account
-
-## Step 1: Install CLI tools in your local machine (laptop) to remotely access your Cloud resources
-
-#### 1.1. Download and Install the IBM Cloud CLI: `bx`
-'bx' allows you to start and manage resources (e.g., applications, containers, services, ...) in the IBM cloud. 
-
-Download [bx CLI](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
-and install it, following the instructions for your local machine operating system (OSX, Linux or Windows)
-`curl -fsSL https://clis.ng.bluemix.net/install/osx | sh`
-or
-`curl -fsSL https://clis.ng.bluemix.net/install/linux | sh`
+Please make sure you have completed the prequisites before starting this tutorial.
+You can get the prequisited [ here ](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md)
 
 
-#### 1.2. Install `awscli` using [pip](https://pypi.org/project/pip/)
+## Step 1: Login Using API Key:   
 
-The [aws CLI](https://docs.aws.amazon.com/cli/latest/userguide/) lets you setup and upload data to your buckets. (Will get to this later)
+Login to your bluemix account using the api key (see pre-requisite document)
 
-Note: Please install latest version of awscli
-```
-pip install awscli
-```
-or
-```
-curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-unzip awscli-bundle.zip
-./awscli-bundle/install -b ~/bin/aws
-```
-#### 1.3. Install `bx` machine-learning plugin
-
-The `machine-learning` plugin for `bx` lets you start, view, and stop your Machine Learning jobs on Watson.
-
-```
-bx plugin install machine-learning
-```
-
-## Step 2. Login to IBM Cloud account:
-##### 2.1. Login using password 
-
-Now we will create data and service resources in the IBM Cloud. First we login.
-```
-bx login
-```
-IBM employees can use
-```
-bx login --sso
-```
-
-or
-
-##### 2.2 Login Using API Key:   Get an Api-key:
-Goto [https://console.bluemix.net/](https://console.bluemix.net/) and login
-click here: [https://console.bluemix.net/iam/#/apikeys](https://console.bluemix.net/iam/#/apikeys)
-or
-Click on Manage --> Security --> Platform API Keys
-
-Create an API key and save it somewhere secure. 
-
-Note: Please do NOT share this key with anyone. 
-
-<img src="img/i3.png">
-
-Login:
-
-Now we will create data and service resources in the IBM Cloud. First we login. (Use your API key from above)
 ```
 bx login --apikey <your_api_key>
 ```
 
-
-
-## 3. Configure your account to access IBM Cloud 
-
-In order to run jobs on Watson, you need an `organization` (also called `org`) and a `space` to hold your jobs. 
-`Org` names are also globally unique. 
-
-#### 3.1 Use an existing org
-The account owner should have already created an `org` for you (and others) to share assets.
-You can find out the organizations available for you with the command:<br>
-
-```
-bx account orgs
-```
-
-The command will return something like:
-
-```
-Name                Region     Account owner      Account ID                         Status   
-MITIBMWatsonAiLab   us-south   ailab@us.ibm.com   5eb998dd20e3d7fc0153329e32362d64   active   
-```
-Select the correct `Name` and save it in a variable, i.e.,
-```
-org_name="MITIBMWatsonAiLab"
-bx target -o $org_name
-```
-
-#### 3.2 Use an existing space
-Now lets find out the name of the `space` for you under the `org`. 
-```
-bx account spaces
-```
-This will return something like:
-```
-Getting spaces under organization MITIBMWatsonAiLab in region us-south as myuserid@mit.edu...
-OK
-
-Name   
-dev 
-```
-Select the correct space `Name` and save it in a variable, e.g.,
-```
-space_name="dev"
-```
-#### 3.3 Target correct org and space
-```
-bx target -o $org_name -s $space_name
-```
-
-#### MIT-IBM Watson AI Lab users only:
-You can use the below command to target correct org, space and region for ailab projects.
-`bx login -o MITIBMWatsonAiLab -a api.ng.bluemix.net -g MITIBMWatsonAiLab -s dev --apikey <yourapikey>`
-
-
-
-## Step 4: Create a Watson ML Service Instance
+## Step 2: Create a Watson ML Service Instance
 Note: -  Learner Image versions that are supported by WML [https://github.ibm.com/deep-learning-platform/dlaas/wiki/Learner-Image-details](https://github.ibm.com/deep-learning-platform/dlaas/wiki/Learner-Image-details)
 
 `bx service create pm-20 standard <your_Instance_Name>`
 
-#### 4.1. Setup a Watson ML Instance : Create WML Access key
+#### 2.1. Setup a Watson ML Instance : Create WML Access key
 
 ```
 bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
 ```
 
-#### 4.2 Set up Environment variables
+#### 2.2 Set up Environment variables
 ```
 export ML_INSTANCE=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name> | gawk '/instance_id/ {gsub("\"","");print $2}' 
 export ML_USERNAME=`bx service key-show <your_Instance_Name>  <your_Instance_Key_Name> | gawk '/username/ {gsub("\"","");print $2}' 
@@ -239,13 +88,13 @@ export ML_PASSWORD=`bx service key-show <your_Instance_Name>  <your_Instance_Key
 export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>| gawk '/url/ {gsub("\"","");print $2}'
 ```
 
-## Step 5: Create a bucket in the Cloud to store your data
+## Step 3: Create a bucket in the Cloud to store your data
 
 A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is a huge "folder" in the cloud. 
 You use the bucket to put and get any file or folder (e.g., your datasets) using an api-style interface.
 
 
-#### 5.1. Create a cloud storage instance:
+#### 3.1. Create a cloud storage instance:
 
 lets create your own personal cloud storage instance to hold your bucket(s) and name the instance `my_instance`.
 
@@ -255,7 +104,7 @@ bx resource service-instance "my_instance"
 
 ```
 
-#### 5.2. Get security credentials:
+#### 3.2. Get security credentials:
 
 We then create and get the credentials to `my_instance` and naming it `my_cli_key` so that you can create and access your bucket.
 
@@ -274,7 +123,7 @@ export MY_BUCKET_KEY = $access_key_id
 export MY_BUCKET_SECRET_KEY = $secret_access_key
 ```
 
-#### 5.3 Create and configure your aws profile.
+#### 3.3 Create and configure your aws profile.
 
 Use `aws` tool to add `access_key_id` and `secret_access_key` to a profile and give any name to your profile. say, `my_profile` (leave the other fields as None).
 
@@ -284,7 +133,7 @@ aws configure --profile my_profile
 
 Provide `access_key_id` and `secret_access_key` when requested. Press enter if anything else is requested. [none]
 
-#### 5.4. Create an alias:
+#### 3.4. Create an alias:
 
 First, lets create an alias for repeating parts of the command.
 
@@ -296,7 +145,7 @@ Windows OS users:
 
 
 
-#### 5.5. Create a bucket:
+#### 3.5. Create a bucket:
 
 Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, e.g., below we call the bucket "mybucket".  
 ```
