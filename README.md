@@ -5,7 +5,7 @@
 
 ### Steps for one time Setup:
 
-Step 0. Confirm that you have completed the Pre requisites
+Step 0. Pre requisites
 
 Step 1. Login to your bluemix account
 
