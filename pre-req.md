@@ -126,39 +126,51 @@ You can download git from https://git-scm.com/downloads. git bash come bundled w
 
 #### Python Compatibility issues
 If you have any concerns about python version compatibility, we suggest you use Anaconda.
-You can download and installation instructions of Anaconda from below links
-Mac OS users, https://conda.io/docs/user-guide/install/macos.html
-Windows users, https://conda.io/docs/user-guide/install/windows.html
-Choose the different version of python
-First, make sure you have the latest version of conda by running
-conda update conda
-Then run
-conda install python=3.5
-or any version you need
-You can visit this link for reference https://conda.io/docs/user-guide/tasks/manage-python.html
- 
-Note for Windows users: - 
- please make sure that the python executable path is set in the environment variable ‘path’.
-Visit to system properties. 
-Click on environment variables.
-Click on ‘path’ variable and click on edit.
-Verify if the path of your python executable is preset in the list. If not, clock on ‘New’ button and 
 
-add the path. Click OK.
+You can download and installation instructions of Anaconda from below links
+
+Mac OS users, [https://conda.io/docs/user-guide/install/macos.html](https://conda.io/docs/user-guide/install/macos.html
+)
+
+Windows users, [https://conda.io/docs/user-guide/install/windows.html](https://conda.io/docs/user-guide/install/windows.html)
+
+Choose the different version of python
+
+First, make sure you have the latest version of conda by running
+
+conda update conda
+
+Then run
+
+`conda install python=3.5`
+
+or any version you need
+
+You can visit this link for reference [https://conda.io/docs/user-guide/tasks/manage-python.html](https://conda.io/docs/user-guide/tasks/manage-python.html)
+ 
+`Note for Windows users: - `
+ please make sure that the python executable path is set in the environment variable `‘path’`.
+ 
+Visit to `system properties`. 
+Click on `environment variable`s.
+Click on `‘path’` variable and click on `edit`.
+Verify if the path of your python executable is preset in the list. If not, clock on ‘`New`’ button and 
+
+add the path. Click `OK`.
 
 <img src="img/winenv.png">
  
-Note: - You will need to add the path of the folder that contains python.exe ( version >3).
+`Note`: - You will need to add the path of the folder that contains python.exe ( version >3).
 
 Bluemix CLI installation help.
 you can follow the installation steps from here.
-https://console.bluemix.net/docs/cli/index.html#overview (https://goo.gl/FNwibJ)
-https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install
+[https://console.bluemix.net/docs/cli/index.html#overview] (https://goo.gl/FNwibJ)
+[https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install](https://console.bluemix.net/docs/cli/reference/bluemix_cli/download_cli.html#download_install)
 
 #### Issues with aws commands:
-Install AWS CLI (For object storage)
-curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+Install Latest AWS CLI (For object storage)
+`curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
 unzip awscli-bundle.zip
-./awscli-bundle/install -b ~/bin/aws
+./awscli-bundle/install -b ~/bin/aws`
 (OR)
-pip install awscli
+`pip install awscli`
