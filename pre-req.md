@@ -49,7 +49,7 @@ If you do not have MITIBMAiLab under Cloud Foundry Org, stop here and contact No
 Make sure that Python version 3.6 and pip 10 is installed. 
 Open a terminal and use the commands below in your command line interface to check.
 
- <img src="img/python.png">
+ <img src="img/python.PNG">
  
 If either python >3.6 and/or pip 10 are not installed, please follow link [https://www.python.org/downloads/](https://www.python.org/downloads/) to do so.
  
