@@ -55,10 +55,10 @@ Step 3. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage
  Other useful commands
  
  
-## Step 0: [Pre-requisites] (https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md)
+## Step 0: [Pre-requisites](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md)
 
 Please make sure you have completed the prequisites before starting this tutorial.
-You can get the prequisited [ here ](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md)
+You can get the prequisites here : [https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/pre-req.md)
 
 
 ## Step 1: Login Using API Key:   
