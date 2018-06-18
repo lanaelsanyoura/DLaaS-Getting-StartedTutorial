@@ -23,73 +23,95 @@
  
 ### 1. Access to the internal IBM Cloud account
 please verify that you have access to Internal IBM cloud account.
-Login to https://console.bluemix.net/
+
+Login to [https://console.bluemix.net/](https://console.bluemix.net/) 
+
+<img src="img/login.png" >
 
 Click on the profile avatar in the top-right-corner for the webpage.
+
 Under the account, you should see a dropdown box, with a list of all the IBM cloud accounts you have access to.
+
 Select the AI Lab account by choosing 1589313—IBM account. 
+
+<img src="img/i2.png" >
 
  
 (Notice that sometimes the account is just listed as ‘IBM’.)
+
 Verify the account access by checking that the CLOUD FOUNDRY ORG is ‘MITIBMWatsonAiLab’
 
+<img src="img/i1.png">
 
-If you do not have MITIBMAiLab under Cloud Foundry Org, stop here and contact Noor Fairoza on slack.
+If you do not have MITIBMAiLab under Cloud Foundry Org, stop here and contact Noor Fairoza via slack or email.
+
 ### 2. Python
 Make sure that Python version 3.6 and pip 10 is installed. 
 Open a terminal and use the commands below in your command line interface to check.
 
-
-
-
+ <img src="img/python.png">
  
-If either python >3.6 and/or pip 10 are not installed, please follow link https://www.python.org/downloads/
-to do so.
+If either python >3.6 and/or pip 10 are not installed, please follow link [https://www.python.org/downloads/](https://www.python.org/downloads/) to do so.
  
 ### 3. Install the IBM Cloud developer tools
 The "Bluemix CLI" tools let you interact with IBM Cloud Services.
 Install these tools as follows: 
  open  a terminal and use the command below:
 3.1 Install bluemix CLI
-Mac OS: 
-curl -fsSL https://clis.ng.bluemix.net/install/osx | sh
 
-Linux: 
-curl -fsSL https://clis.ng.bluemix.net/install/linux | sh
- 
-Windows 10: Open Windows PowerShell by right-clicking the PowerShell icon and selecting "Run as Administrator" and run the command below.
-Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('http://ibm.biz/idt-win-installer')
- 
-3.2 Install Machine learning plugin
-bx plugin install machine-learning -r Bluemix
+#### Mac OS: 
 
-3.3 Install  Watson ML Client   library and plugin  for the IBM  Cloud CLI
-pip install watson-machine-learning-client
+`curl -fsSL https://clis.ng.bluemix.net/install/osx | sh`
+
+#### Linux: 
+
+`curl -fsSL https://clis.ng.bluemix.net/install/linux | sh`
+ 
+#### Windows 10: 
+
+Open Windows PowerShell by right-clicking the PowerShell icon and selecting "Run as Administrator" and run the command below.
+
+`Set-ExecutionPolicy Unrestricted; iex(New-Object Net.WebClient).DownloadString('http://ibm.biz/idt-win-installer')`
+ 
+#### 3.2 Install Machine learning plugin
+
+`bx plugin install machine-learning -r Bluemix`
+
+#### 3.3 Install  Watson ML Client   library and plugin  for the IBM  Cloud CLI
+
+`pip install watson-machine-learning-client`
  
  
 ### 4. Access your IBM Cloud account using CLI.
 
-4.1 . Get your API Key
-login to https://console.bluemix.net from your browser
+####  4.1 . Get your API Key
+login to [https://console.bluemix.net/iam/#/apikeys](https://console.bluemix.net/iam/#/apikeys) from your browser
+
 Click create button. Give a name and description  and create a platform api key.
 
-Click show. Copy and save your key at a secure location.
-Note:- you can see your api only once. If you lose your key, you will need to recreate it.
+ <img src="img/apikey.png">
+
+Click `show`. Copy and save your key at a secure location.
+
+`Note`:- you can see your api only once. If you lose your key, you will need to recreate it.
  
-4.2 . Login using your IBM Cloud API Key
+#### 4.2 . Login using your IBM Cloud API Key
+
 Open your Command line interface
+
 Use the following command to login
-bx login –apikey <yourapikeyhere>
 
+`bx login –apikey <yourapikeyhere>`
 
-
-
- 
+<img src="img/apikeylogin.png">
  
 ### 5. Target correct  Region, Resource group, Org and Space.
+
 Use the "bx target" command to target the correct Cloud parameters.
-bx target -r us-south -g MITIBMWatsonAiLab   -o MITIBMWatsonAiLab -s dev
+
+`bx target -r us-south -g MITIBMWatsonAiLab   -o MITIBMWatsonAiLab -s dev`
  
+  <img src="img/v1.png">
 
  
 
@@ -100,7 +122,7 @@ bx target -r us-south -g MITIBMWatsonAiLab   -o MITIBMWatsonAiLab -s dev
 If you have a windows machine, you can use git bash to run the following commands.
 You can download git from https://git-scm.com/downloads. git bash come bundled with git.
 
-
+ <img src="img/gitbash.png">
 
 #### Python Compatibility issues
 If you have any concerns about python version compatibility, we suggest you use Anaconda.
@@ -123,6 +145,8 @@ Click on ‘path’ variable and click on edit.
 Verify if the path of your python executable is preset in the list. If not, clock on ‘New’ button and 
 
 add the path. Click OK.
+
+<img src="img/winenv.png">
  
 Note: - You will need to add the path of the folder that contains python.exe ( version >3).
 
