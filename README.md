@@ -63,21 +63,22 @@ You can get the prequisites here : [https://github.com/mypublicorg/pytorch-cifar
 
 ## Step 1: Login Using API Key:   
 
-Login to your bluemix account using the api key (see pre-requisite document)
+Login to your IBM Cloud account using the apiKey (see pre-requisite document for details)
 
 ```
 bx login --apikey <your_api_key>
 ```
 
 ## Step 2: Create a Watson ML Service Instance
-Note: -  Learner Image versions that are supported by WML [https://github.ibm.com/deep-learning-platform/dlaas/wiki/Learner-Image-details](https://github.ibm.com/deep-learning-platform/dlaas/wiki/Learner-Image-details)
-
+Below pm-20 is the name of the ML Service. 
+You create a new instance and give it a name, e.g., `myMLinstance1`. Below, replace  <your_Instance_Name> by your chosen name.
 `bx service create pm-20 standard <your_Instance_Name>`
 
-#### 2.1. Setup a Watson ML Instance : Create WML Access key
+#### 2.1. Create an Access key for accessing your Watson ML service instance
+Below, replace <cli_key_CLI_WML_Instance>  by a key name of your choice.
 
 ```
-bx service key-create CLI_WML_Instance cli_key_CLI_WML_Instance
+bx service key-create <your_Instance_Name> <cli_key_CLI_WML_Instance>
 ```
 
 #### 2.2 Set up Environment variables
@@ -88,36 +89,37 @@ export ML_PASSWORD=`bx service key-show <your_Instance_Name>  <your_Instance_Key
 export ML_ENV=`bx service key-show <your_Instance_Name> <your_Instance_Key_Name>| gawk '/url/ {gsub("\"","");print $2}'
 ```
 
-## Step 3: Create a bucket in the Cloud to store your data
+## Step 3: Create a bucket in the Cloud Object Storage (COS) to store data
 
-A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is a huge "folder" in the cloud. 
+A [bucket](https://datascience.ibm.com/docs/content/analyze-data/ml_dlaas_object_store.html) is a huge "folder" 
+in the COS. 
 You use the bucket to put and get any file or folder (e.g., your datasets) using an api-style interface.
 
 
 #### 3.1. Create a cloud storage instance:
 
-lets create your own personal cloud storage instance to hold your bucket(s) and name the instance `my_instance`.
+lets create your own personal cloud storage instance to hold your bucket(s) and name the instance <my_COS_instance>.
 
 ```
-bx resource service-instance-create "my_instance" cloud-object-storage standard global
-bx resource service-instance "my_instance"
+bx resource service-instance-create <my_COS_instance> cloud-object-storage standard global
+bx resource service-instance <my_COS_instance>
 
 ```
 
 #### 3.2. Get security credentials:
 
-We then create and get the credentials to `my_instance` and naming it `my_cli_key` so that you can create and access your bucket.
+Now create and get the credentials to access `my_COS_instance`.
+You name the credentials <my_cli_key> so that you can create and access your bucket.
 
 Create key, store it and print it:
 
 ```
-bx resource service-key-create "my_cli_key" Writer --instance-name "my_instance" --parameters '{"HMAC":true}' > /dev/null 2>&1
-access_key_id=`bx resource service-key my_cli_key | grep "access_key_id"| cut -d\:  -f2`
-secret_access_key=`bx resource service-key my_cli_key | grep "secret_access_key"| cut -d\:  -f2`
+bx resource service-key-create <my_cli_key> Writer --instance-name <my_COS_instance> --parameters '{"HMAC":true}' > /dev/null 2>&1
+access_key_id=`bx resource service-key <my_cli_key> | grep "access_key_id"| cut -d\:  -f2`
+secret_access_key=`bx resource service-key <my_cli_key> | grep "secret_access_key"| cut -d\:  -f2`
 echo ""; echo "Credentials:"; echo "access_key_id - $access_key_id"; echo "secret_access_key - $secret_access_key"; echo ""
 ```
-Save your keys.(note it down)
-You'll need them again later to access your resources...
+Save your keys to shell variables. (write down the keys as you'll need them again later to access your resources.)
 ```
 export MY_BUCKET_KEY = $access_key_id
 export MY_BUCKET_SECRET_KEY = $secret_access_key
@@ -125,32 +127,32 @@ export MY_BUCKET_SECRET_KEY = $secret_access_key
 
 #### 3.3 Create and configure your aws profile.
 
-Use `aws` tool to add `access_key_id` and `secret_access_key` to a profile and give any name to your profile. say, `my_profile` (leave the other fields as None).
+Use the `aws` tool to add `access_key_id` and `secret_access_key` to a profile and give a name to your profile,
+e.g. <my_aws_profile>. 
 
 ```
-aws configure --profile my_profile
+aws configure --profile <my_aws_profile>
 ```
-
-Provide `access_key_id` and `secret_access_key` when requested. Press enter if anything else is requested. [none]
+The above command will ask for your `access_key_id` and `secret_access_key`.
+Press enter for all other fields requested. [none]
 
 #### 3.4. Create an alias:
 
 First, lets create an alias for repeating parts of the command.
 
 Mac OS users:
-`alias aws='aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net'`
+`alias bxaws='aws --profile my_aws_profile --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net'`
 
 Windows OS users:
-`doskey aws=aws --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net $*`
-
+`doskey bxaws=aws --profile my_aws_profile --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net $*`
 
 
 #### 3.5. Create a bucket:
 
-Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, e.g., below we call the bucket "mybucket".  
+Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, e.g., below we call the bucket "mybucket", but consider adding your userid as part of the bucket name.  
 ```
 bucket_name="mybucket"
-aws --profile <PROFILE_NAME> s3api create-bucket --bucket <your-bucket-name>
+bxaws s3api create-bucket --bucket <your-bucket-name>
 ```
 
 ## Congratulations you are done with the one-time SETUP!
@@ -182,11 +184,13 @@ Download all the data from this link `https://ibm.box.com/s/5ss0adenqf4dow9bqynb
 ### Step 1: Upload the dataset to your bucket:
 
 ```
-aws  --profile my_profile s3 cp cifar10/  s3://$bucket_name/cifar10 --recursive
+bxaws s3 cp cifar10/  s3://$bucket_name/cifar10 --recursive
 ```
 (optional) You could verify if the data is successfully uploaded using this comand.
 
-`aws --profile my_profile s3 ls s3://$bucket_name/cifar10`
+```
+bxaws  s3 ls s3://$bucket_name/cifar10
+```
 
 
 ### Step 2: Edit your manifest file, e.g., `pytorch-cifar.yml`
@@ -196,7 +200,7 @@ This yaml file should hold all the information needed for executing the job, inc
 
 #### 2.1. Copy the template manifest:
 
-Get your compy from the template.
+Make a copy from the template.
 
 ```
 cp pytorch-cifar-template.yml my-pytorch-cifar.yml
@@ -212,7 +216,7 @@ model_definition:
   framework:
 #framework name and version (supported list of frameworks available at 'bx ml list frameworks')
     name: pytorch
-    version: 0.3
+    version: 0.4
 #name of the training-run
   name: MYRUN
 #Author name and email
@@ -252,12 +256,12 @@ when the job starts execution at the server. (make sure you give right path to d
 
 ```
 python3 main.py --cifar_path ${DATA_DIR}/cifar10
-      --checkpoint_path ${RESULT_DIR} --epochs 10
+      --checkpoint_path ${RESULT_DIR} --epochs 5
 ```
 
-This command will execute `main.py`, which starts a training run of a specified model. 
-Since no model is specified, it will train the default model, `vgg16`, 
-for 10 epochs using the dataset that we uploaded to the bucket. 
+This command will execute `main.py`, which starts a training run.  
+Since no model is specified, it will use the default model, `vgg16`, 
+for 5 epochs using the dataset that we uploaded to the bucket. 
 
 ### Step 3: Send code to run on Watson Studio!
 
@@ -293,12 +297,11 @@ As training proceeds, you should see results from the training process being cop
 
 <img src="img/cloudstorage.jpg" width=100%>
 
-You can also inspect the status of training by downloading and viewing the training log file which has been copied to the result bucket. 
-This is useful in debugging errors and failed jobs.
+You can also inspect the status of training by downloading and viewing the training log file which has been copied to the results bucket. (This can be useful for debugging).
 
-#### To do this, we run:
+#### To do this, run:
 ```
-aws --profile my_profile s3 cp s3://my_bucket/ < trainingID Rig >/learner-1/training-log.txt -
+bxaws s3 cp s3://my_bucket/ < trainingID>/learner-1/training-log.txt -
 ```
 
 ### Additional Information on Deep Learning in IBM Cloud
@@ -314,20 +317,31 @@ Content derived from material provided by Kaouta el Maghraoui (IBM Research), Ge
 ### Other useful commands
 
 #### Download Trained model files
-` aws  --profile <PROFILE_NAME> s3 cp s3://$bucket_name/<training run ID> ./trainedmodel --recursive
+```
+bxaws s3 cp s3://$bucket_name/<training run ID> ./trainedmodel --recursive
 ls ./trainedmodel `
  
 #### List the buckets
-`aws  s3api list-buckets --profile <PROFILE_NAME>`
+```
+bxaws  s3api list-buckets 
+```
 
 #### List the contents of your bucket
-`aws ---profile <PROFILE_NAME> s3 ls s3://$bucket_name/`
+```
+bxaws s3 ls s3://$bucket_name/`
+```
 
 #### Query status of the job
-`bx ml show training-runs <training run ID>`
+```
+bx ml show training-runs <training run ID>
+```
 
-#### View log files
-`aws cli aws s3 ls s3://$bucket_name/<training_id>/learner-1/`
+#### View log files 
+```
+aws cli aws s3 ls s3://$bucket_name/<training_id>/learner-1/
+```
 
 #### Delete files from your bucket
-`aws --profile <PROFILE_NAME> s3 rm s3://$bucket_name/fileOrDirectoryName  --recursive` 
+```
+bxaws s3 rm s3://$bucket_name/fileOrDirectoryName  --recursive
+``` 
