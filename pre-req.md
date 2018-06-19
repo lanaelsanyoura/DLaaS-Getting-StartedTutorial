@@ -1,5 +1,5 @@
 
-# Watson studio Dlaas Tutorial
+# Pre-Requisites for the IBM Watson studio Dlaas Tutorial
  
 ### Please make sure you satisfy the following list of pre- requisites before you attend DlaaS Tutorial.
 #### Checklist:
