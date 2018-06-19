@@ -339,7 +339,7 @@ bx ml show training-runs <training run ID>
 
 #### View log files 
 ```
-aws cli aws s3 ls s3://$bucket_name/<training_id>/learner-1/
+aws cli aws --endpoint-url=https://s3-api.us-geo.objectstorage.softlayer.net s3 ls s3://$bucket_name/<training_id>/learner-1/
 ```
 
 #### Delete files from your bucket
