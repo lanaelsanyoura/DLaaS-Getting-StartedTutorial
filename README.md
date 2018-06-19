@@ -319,8 +319,9 @@ Content derived from material provided by Kaouta el Maghraoui (IBM Research), Ge
 #### Download Trained model files
 ```
 bxaws s3 cp s3://$bucket_name/<training run ID> ./trainedmodel --recursive
-ls ./trainedmodel `
- 
+ls ./trainedmodel 
+```
+
 #### List the buckets
 ```
 bxaws  s3api list-buckets 
