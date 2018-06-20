@@ -137,8 +137,8 @@ echo ""; echo "COS Credentials:"; echo "access_key_id: $access_key_id"; echo "se
 ```
 Save your keys to shell variables. (write down the keys as you'll need them again later to access your resources.)
 ```
-export MY_BUCKET_KEY = $access_key_id
-export MY_BUCKET_SECRET_KEY = $secret_access_key
+export MY_BUCKET_KEY=$access_key_id
+export MY_BUCKET_SECRET_KEY=$secret_access_key
 ```
 
 #### 3.3 Create and configure your aws profile.
