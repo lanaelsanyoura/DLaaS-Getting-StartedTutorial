@@ -33,17 +33,19 @@ You can find the one time setup instructions [HERE](https://github.com/mypublico
  1: Upload your dataset to the bucket
  
  2: Edit your manifest file
+ 
     2.1. Copy the template manifest
+    
     2.2. Edit the configuration file
  
  3: Send code to run on Watson Studio!
+ 
     3.1. Zip all the code and models into a .zip file
+    
     3.2. Send your code and manifest to IBM Watson Studio
  
  4: Monitor the training
  
- You can find the Steps for Demo [HERE](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/demo.md)
-  
- Additional Information on Deep Learning in IBM Cloud
- 
- Click [HERE](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/usefulcommands.md)  for Other useful commands
+ **You can find the Steps for Demo [HERE](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/demo.md)**
+
+ **Click [HERE](https://github.com/mypublicorg/pytorch-cifar10-in-ibm-cloud/blob/master/usefulcommands.md)  for Other useful commands**
