@@ -27,20 +27,15 @@ Step 3. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage
  ### Steps for the Demo:
  
  Step 0: Get a dataset
- 
  Step 1: Upload your dataset to the bucket
- 
  Step 2: Edit your manifest file
     2.1. Copy the template manifest
     2.2. Edit the configuration file
-    
  Step 3: Send code to run on Watson Studio!
     3.1. Zip all the code and models into a .zip file
     3.2. Send your code and manifest to IBM Watson Studio
-    
  Step 4: Monitor the training
- 
- 
+  
  Additional Information on Deep Learning in IBM Cloud
  
  Other useful commands
@@ -86,7 +81,7 @@ $ instance_id=`bx service key-show CLI_WML_Instance key_CLI_WML_Instance | grep 
 $ username=`bx service key-show CLI_WML_Instance key_CLI_WML_Instance | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2`
 $ password=`bx service key-show CLI_WML_Instance key_CLI_WML_Instance | grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2`
 
-echo ""; echo "ML Instance Credentials:"; echo "instance_id: $instance_id"; echo "username: $username "; echo "password: $password"; echo ""
+$ echo ""; echo "ML Instance Credentials:"; echo "instance_id: $instance_id"; echo "username: $username "; echo "password: $password"; echo ""
 ```
 
 #### 2.2 Set up Environment Variables:
@@ -156,10 +151,10 @@ Windows OS users:
 doskey bxaws=aws --profile <my_aws_profile> --endpoint-url=http://s3-api.us-geo.objectstorage.softlayer.net $*
 ```
 
-
 #### 3.5. Create a bucket:
 
-Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. **NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, and add your userid as part of the bucket name.  
+Now, lets make a bucket and name it something unique! Buckets are named globally, which means that only one IBM Cloud account can have a bucket with a particular name. 
+**NB: the bucket names may not contain upper-case, underscores, dashes, periods, etc. Just use simple text, and add your userid as part of the bucket name.  
 ```
 $ bxaws s3api create-bucket --bucket <your-bucket-name>
 ```
