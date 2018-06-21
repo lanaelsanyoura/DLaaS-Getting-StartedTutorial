@@ -26,15 +26,19 @@ Step 3. Define a [Cloud Object Storage](https://www.ibm.com/cloud/object-storage
  
  ### Steps for the Demo:
  
- Step 0: Get a dataset
- Step 1: Upload your dataset to the bucket
- Step 2: Edit your manifest file
+ 0: Get a dataset
+ 
+ 1: Upload your dataset to the bucket
+ 
+ 2: Edit your manifest file
     2.1. Copy the template manifest
     2.2. Edit the configuration file
- Step 3: Send code to run on Watson Studio!
+ 
+ 3: Send code to run on Watson Studio!
     3.1. Zip all the code and models into a .zip file
     3.2. Send your code and manifest to IBM Watson Studio
- Step 4: Monitor the training
+ 
+ 4: Monitor the training
   
  Additional Information on Deep Learning in IBM Cloud
  
