@@ -21,22 +21,22 @@ $ bx target -r us-south -g MITIBMWatsonAiLab -o MITIBMWatsonAiLab -s dev
 
 ## Step 2: Create a Watson ML Service Instance
 Below `pm-20` is the name of the Watson ML Service. 
-You create a new instance and give it a name, e.g., `myuseridMLinstance1`. Below, replace  <CLI_WML_Instance> by your chosen name.
+You create a new instance and give it a name, e.g., `myuseridMLinstance1`. Below, replace  <CLI_WMLi> by your chosen name.
 ```
-$ bx service create pm-20 standard <CLI_WML_Instance>
+$ bx service create pm-20 standard <CLI_WMLi>
 ```
 
 #### 2.1. Create an Access key for accessing your Watson ML service instance
-Below, replace <key_CLI_WML_Instance>  by a key name of your choice.
+Below, replace <key_CLI_WMLi>  by a key name of your choice.
 
 ```
-$ bx service key-create <CLI_WML_Instance> <key_CLI_WML_Instance>
+$ bx service key-create <CLI_WMLi> <key_CLI_WMLi>
 ```
 #### 2.2 Retrieve credentials:
 ```
-$ instance_id=`bx service key-show CLI_WML_Instance key_CLI_WML_Instance | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2`
-$ username=`bx service key-show CLI_WML_Instance key_CLI_WML_Instance | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2`
-$ password=`bx service key-show CLI_WML_Instance key_CLI_WML_Instance | grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2`
+$ instance_id=`bx service key-show <CLI_WMLi> <key_CLI_WMLi> | grep "instance_id"| awk -F": " '{print $2}'| cut -d'"' -f2`
+$ username=`bx service key-show <CLI_WMLi> <key_CLI_WMLi> | grep "username"| awk -F": " '{print $2}'| cut -d'"' -f2`
+$ password=`bx service key-show <CLI_WMLi> <key_CLI_WMLi> | grep "password"| awk -F": " '{print $2}'| cut -d'"' -f2`
 
 $ echo ""; echo "ML Instance Credentials:"; echo "instance_id: $instance_id"; echo "username: $username "; echo "password: $password"; echo ""
 ```
