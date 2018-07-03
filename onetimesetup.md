@@ -46,6 +46,7 @@ $ echo ""; echo "ML Instance Credentials:"; echo "instance_id: $instance_id"; ec
 $ export ML_INSTANCE=$instance_id
 $ export ML_USERNAME=$username
 $ export ML_PASSWORD=$password
+$ export ML_ENV=url (e.g. https://us-south.ml.cloud.ibm.com )
 ```
 
 ## Step 3: Create a bucket in the Cloud Object Storage (COS) to store data
